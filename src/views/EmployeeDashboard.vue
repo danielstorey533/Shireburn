@@ -5,7 +5,6 @@
   :value="employees"
   :paginator="true"
   :rows="10"
-  :lazy="true"
   :totalRecords="totalRecords"
   @page="onLazyLoad"
 >
@@ -17,11 +16,11 @@
     {{ renderEmploymentStatus(data) }}
   </template>
 </Column>
-<Column
-  field="terminationStatus"
-  header="Termination Status"
-  :body="renderTerminationStatus"
-/>
+<Column field="terminationStatus" header="Termination Status">
+  <template #body="{ data }">
+    {{ renderTerminationStatus(data) }}
+  </template>
+</Column>
   <Column header="Actions" :body="renderActions" />
 </DataTable>
 
@@ -44,6 +43,7 @@ const employees = computed(() => store.paginatedEmployees);
 const currentPage = computed(() => store.currentPage);
 const pageSize = computed(() => store.pageSize);
 const totalRecords = computed(() => store.totalEmployees);
+const today = new Date();
 
 const hasNextPage = computed(() => {
   return store.currentPage * store.pageSize < store.totalEmployees;
@@ -54,12 +54,21 @@ const onLazyLoad = (event: any) => {
   store.setPageSize(event.rows);
 };
 
+//Function to check if employee is currently employed.
 const renderEmploymentStatus = (rowData: any) => {
-  return 'Placeholder';
+  const employmentDate = new Date(rowData.employmentDate);
+
+  return employmentDate > today ? 'employed soon' : 'currently employed';
 };
 
+
+//Function to check if employee has been terminated.
 const renderTerminationStatus = (rowData: any) => {
-  return 'Placeholder';
+  if (!rowData.terminationDate) return 'N/A';
+
+  const terminationDate = new Date(rowData.terminationDate);
+
+  return terminationDate > today ? 'to be terminated' : 'terminated';
 };
 
 
