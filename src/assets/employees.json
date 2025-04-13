@@ -68,5 +68,75 @@
     "department": "Finance",
     "employmentDate": "2015-08-20",
     "terminationDate": null
+  },
+  {
+    "fullName": "Emily Johnson",
+    "occupation": "Software Engineer",
+    "department": "Engineering",
+    "employmentDate": "2018-06-15",
+    "terminationDate": null
+  },
+  {
+    "fullName": "Michael Chen",
+    "occupation": "Product Manager",
+    "department": "Product",
+    "employmentDate": "2025-05-20",
+    "terminationDate": null
+  },
+  {
+    "fullName": "Sarah Williams",
+    "occupation": "UX Designer",
+    "department": "Design",
+    "employmentDate": "2020-01-22",
+    "terminationDate": "2024-12-31"
+  },
+  {
+    "fullName": "David Rodriguez",
+    "occupation": "Data Analyst",
+    "department": "Analytics",
+    "employmentDate": "2017-11-05",
+    "terminationDate": "2022-08-30"
+  },
+  {
+    "fullName": "Jessica Kim",
+    "occupation": "Marketing Specialist",
+    "department": "Marketing",
+    "employmentDate": "2021-02-18",
+    "terminationDate": "2025-06-15"
+  },
+  {
+    "fullName": "Robert Taylor",
+    "occupation": "DevOps Engineer",
+    "department": "Engineering",
+    "employmentDate": "2019-07-09",
+    "terminationDate": null
+  },
+  {
+    "fullName": "Amanda Wilson",
+    "occupation": "HR Manager",
+    "department": "Human Resources",
+    "employmentDate": "2016-05-12",
+    "terminationDate": null
+  },
+  {
+    "fullName": "Daniel Brown",
+    "occupation": "Sales Executive",
+    "department": "Sales",
+    "employmentDate": "2020-09-14",
+    "terminationDate": "2023-01-15"
+  },
+  {
+    "fullName": "Olivia Martinez",
+    "occupation": "Frontend Developer",
+    "department": "Engineering",
+    "employmentDate": "2022-03-01",
+    "terminationDate": null
+  },
+  {
+    "fullName": "James Anderson T",
+    "occupation": "Finance Director",
+    "department": "Finance",
+    "employmentDate": "2015-08-20",
+    "terminationDate": null
   }
 ]
