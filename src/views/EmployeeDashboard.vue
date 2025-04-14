@@ -53,6 +53,7 @@
       :visible="showModal"
       :employee="selectedEmployee"
       :isEditMode="isEditMode"
+      :isViewMode="isViewMode"
       @close="onModalClose"
       @save="onModalSave"
     />
@@ -77,6 +78,7 @@ import EmployeeModal from '@/components/EmployeeModal.vue';
 const selectedEmployee = ref<any | null>(null);
 const showModal = ref(false);
 const isEditMode = ref(false);
+const isViewMode = ref(false);
 const store = useEmployeeStore();
 const confirm = useConfirm();
 
@@ -98,12 +100,14 @@ const onLazyLoad = (event: any) => {
 const onView = (rowData: any) => {
   selectedEmployee.value = rowData;
   isEditMode.value = false;
+  isViewMode.value = true;
   showModal.value = true;
 };
 
 const onEdit = (rowData: any) => {
   selectedEmployee.value = rowData;
   isEditMode.value = true;
+  isViewMode.value = false;
   showModal.value = true;
 };
 
