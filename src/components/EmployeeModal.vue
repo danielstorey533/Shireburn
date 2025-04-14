@@ -26,24 +26,28 @@
       </div>
 
       <div v-else>
-        <div class="field">
-          <label for="code">Code</label>
-          <InputText id="code" v-model="form.code" />
+      <div class="field">
+          <label for="fullName">Full Name</label>
+          <InputText id="fullName" v-model="form.fullName" />
+          <small v-if="errors.fullName" class="p-error">{{ errors.fullName }}</small>
         </div>
 
         <div class="field">
-          <label for="fullName">Full Name</label>
-          <InputText id="fullName" v-model="form.fullName" />
+          <label for="code">Code</label>
+          <InputText id="code" v-model="form.code" />
+          <small v-if="errors.code" class="p-error">{{ errors.code }}</small>
         </div>
 
         <div class="field">
           <label for="occupation">Occupation</label>
           <InputText id="occupation" v-model="form.occupation" />
+          <small v-if="errors.occupation" class="p-error">{{ errors.occupation }}</small>
         </div>
 
         <div class="field">
           <label for="department">Department</label>
           <InputText id="department" v-model="form.department" />
+          <small v-if="errors.department" class="p-error">{{ errors.department }}</small>
         </div>
 
         <div class="flex justify-end mt-4">
@@ -82,6 +86,22 @@ const form = ref({
   department: '',
 });
 
+const errors = ref({
+  code: '',
+  fullName: '',
+  occupation: '',
+  department: '',
+});
+
+const clearErrors = () => {
+  errors.value = {
+    code: '',
+    fullName: '',
+    occupation: '',
+    department: '',
+  };
+};
+
 //Populating the form with employee details if modal is clicked in edit mode.
 watch(
   () => props.employee,
@@ -97,6 +117,7 @@ watch(
         department: '',
       };
     }
+    clearErrors();
   },
   { immediate: true }
 );
@@ -106,14 +127,48 @@ watch(() => props.visible, (val) => {
   internalVisible.value = val;
 });
 
+const validateForm = () => {
+  clearErrors();
+  let valid = true;
+
+  if (!form.value.code.trim()) {
+    errors.value.code = 'Code is required.';
+    valid = false;
+  }
+  if (!form.value.fullName.trim()) {
+    errors.value.fullName = 'Full Name is required.';
+    valid = false;
+  } else if (/\d/.test(form.value.fullName)) {
+    errors.value.fullName = 'Full Name should not contain numbers.';
+    valid = false;
+  }
+
+  if (!form.value.occupation.trim()) {
+    errors.value.occupation = 'Occupation is required.';
+    valid = false;
+  } else if (/\d/.test(form.value.occupation)) {
+    errors.value.occupation = 'Occupation should not contain numbers.';
+    valid = false;
+  }
+
+  if (!form.value.department.trim()) {
+    errors.value.department = 'Department is required.';
+    valid = false;
+  }
+
+  return valid;
+};
 
 const emitClose = () => {
   emit('close');
 };
 
 const emitSave = () => {
-  emit('save', { ...form.value });
+  if (validateForm()) {
+    emit('save', { ...form.value });
+  }
 };
+
 </script>
 
 
@@ -121,6 +176,11 @@ const emitSave = () => {
 .employee-dialog {
   min-width: 450px;
 }
+
+.field {
+  margin-bottom: 1rem;
+}
+
 
 .view-mode {
   padding: 0.5rem;
