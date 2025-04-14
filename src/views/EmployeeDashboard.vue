@@ -16,6 +16,8 @@
       :lazy='true'
       :totalRecords="totalRecords"
       @page="onLazyLoad"
+      @sort="onSort"
+      @filter="onFilter"
     >
       <Column field="fullName" header="Name" sortable filter />
       <Column field="occupation" header="Occupation" sortable filter />
@@ -158,6 +160,15 @@ const onDelete = (employee: any) => {
     }
   });
 };
+
+const onSort = (event: any) => {
+  store.setSort(event.sortField, event.sortOrder);
+};
+
+const onFilter = (event: any) => {
+  store.setFilters(event.filters);
+};
+
 
 //Function to check if employee is currently employed.
 const renderEmploymentStatus = (rowData: any) => {
