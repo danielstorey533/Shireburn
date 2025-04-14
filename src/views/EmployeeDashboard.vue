@@ -1,5 +1,14 @@
 <template>
   <div>
+  <div style="display: flex; justify-content: flex-end; margin-bottom: 1rem; margin-top: 1rem;">
+      <!-- The brief said to put this below the table but I thought it looked better on top -->
+      <Button
+        label="Create Employee"
+        icon="pi pi-plus"
+        class="p-button-success"
+        @click="onCreate"
+      />
+  </div>
     <DataTable
       :value="employees"
       :paginator="true"
@@ -40,14 +49,7 @@
         </template>
       </Column>
     </DataTable>
-    <div class="flex justify-end mt-4">
-      <Button
-        label="Create Employee"
-        icon="pi pi-plus"
-        class="p-button-success"
-        @click="onCreate"
-      />
-  </div>
+    
     <ConfirmDialog />
     <EmployeeModal
       :visible="showModal"
