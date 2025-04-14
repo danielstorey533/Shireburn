@@ -40,6 +40,15 @@
         </template>
       </Column>
     </DataTable>
+    <div class="flex justify-end mt-4">
+      <Button
+        label="Create Employee"
+        icon="pi pi-plus"
+        class="p-button-success"
+        @click="onCreate"
+      />
+  </div>
+
     <EmployeeModal
   :visible="showModal"
   :employee="selectedEmployee"
@@ -57,7 +66,9 @@ import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
 import Dialog from 'primevue/dialog';
 import InputText from 'primevue/inputtext';
+import Button from 'primevue/button';
 import { ref } from 'vue';
+
 import EmployeeModal from '@/components/EmployeeModal.vue';
 
 const selectedEmployee = ref<any | null>(null);
@@ -91,6 +102,20 @@ const onEdit = (rowData: any) => {
   showModal.value = true;
 };
 
+const onCreate = () => {
+  selectedEmployee.value = {
+    id: -1,
+    fullName: '',
+    code: '',
+    occupation: '',
+    department: '',
+    employmentDate: null,
+    terminationDate: null
+  };
+  isEditMode.value = false;
+  showModal.value = true;
+};
+
 const onModalClose = () => {
   showModal.value = false;
   selectedEmployee.value = null;
@@ -108,15 +133,14 @@ const onModalSave = (updatedEmployee: any) => {
   showModal.value = false;
 };
 
-
-const onDelete = (id: number) => {
-  console.log('Delete clicked for ID:', id);
+const onDelete = (employee: any) => {
+  store.deleteEmployee(employee.id);
 };
 
 //Function to check if employee is currently employed.
 const renderEmploymentStatus = (rowData: any) => {
   const employmentDate = new Date(rowData.employmentDate);
-  return employmentDate > today ? 'employed soon' : 'currently employed';
+  return employmentDate > today ? 'Employed soon' : 'Currently employed';
 };
 
 
@@ -124,7 +148,7 @@ const renderEmploymentStatus = (rowData: any) => {
 const renderTerminationStatus = (rowData: any) => {
   if (!rowData.terminationDate) return 'N/A';
   const terminationDate = new Date(rowData.terminationDate);
-  return terminationDate > today ? 'to be terminated' : 'terminated';
+  return terminationDate > today ? 'To be terminated' : 'Terminated';
 };
 
 </script>
