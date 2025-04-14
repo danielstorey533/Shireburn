@@ -40,6 +40,13 @@
         </template>
       </Column>
     </DataTable>
+    <EmployeeModal
+  :visible="showModal"
+  :employee="selectedEmployee"
+  :isEditMode="isEditMode"
+  @close="onModalClose"
+  @save="onModalSave"
+/>
   </div>
 </template>
 
@@ -48,7 +55,14 @@ import { onMounted, computed } from 'vue';
 import { useEmployeeStore } from '@/stores/employeeStore';
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
+import Dialog from 'primevue/dialog';
+import InputText from 'primevue/inputtext';
+import { ref } from 'vue';
+import EmployeeModal from '@/components/EmployeeModal.vue';
 
+const selectedEmployee = ref<any | null>(null);
+const showModal = ref(false);
+const isEditMode = ref(false);
 const store = useEmployeeStore();
 
 onMounted(() => {
@@ -65,6 +79,39 @@ const onLazyLoad = (event: any) => {
   store.setPage(event.page + 1);
   store.setPageSize(event.rows);
 };
+const onView = (rowData: any) => {
+  selectedEmployee.value = rowData;
+  isEditMode.value = false;
+  showModal.value = true;
+};
+
+const onEdit = (rowData: any) => {
+  selectedEmployee.value = rowData;
+  isEditMode.value = true;
+  showModal.value = true;
+};
+
+const onModalClose = () => {
+  showModal.value = false;
+  selectedEmployee.value = null;
+};
+
+//Either update existing employee or add new employee and then close modal. Data table should (hopefully)
+//Automatically update with the new employee store.
+const onModalSave = (updatedEmployee: any) => {
+  if (isEditMode.value) {
+    store.updateEmployee(updatedEmployee);
+  } else {
+    store.addEmployee(updatedEmployee);
+  }
+
+  showModal.value = false;
+};
+
+
+const onDelete = (id: number) => {
+  console.log('Delete clicked for ID:', id);
+};
 
 //Function to check if employee is currently employed.
 const renderEmploymentStatus = (rowData: any) => {
@@ -80,15 +127,4 @@ const renderTerminationStatus = (rowData: any) => {
   return terminationDate > today ? 'to be terminated' : 'terminated';
 };
 
-const onView = (rowData: any) => {
-  console.log('View clicked for:', rowData);
-};
-
-const onEdit = (rowData: any) => {
-  console.log('Edit clicked for:', rowData);
-};
-
-const onDelete = (rowData: any) => {
-  console.log('Delete clicked for:', rowData);
-};
 </script>
