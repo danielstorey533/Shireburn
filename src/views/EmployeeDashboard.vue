@@ -48,14 +48,14 @@
         @click="onCreate"
       />
   </div>
-
+    <ConfirmDialog />
     <EmployeeModal
-  :visible="showModal"
-  :employee="selectedEmployee"
-  :isEditMode="isEditMode"
-  @close="onModalClose"
-  @save="onModalSave"
-/>
+      :visible="showModal"
+      :employee="selectedEmployee"
+      :isEditMode="isEditMode"
+      @close="onModalClose"
+      @save="onModalSave"
+    />
   </div>
 </template>
 
@@ -67,6 +67,9 @@ import Column from 'primevue/column';
 import Dialog from 'primevue/dialog';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
+import ConfirmDialog from 'primevue/confirmdialog';
+import { useConfirm } from 'primevue/useconfirm';
+
 import { ref } from 'vue';
 
 import EmployeeModal from '@/components/EmployeeModal.vue';
@@ -75,6 +78,8 @@ const selectedEmployee = ref<any | null>(null);
 const showModal = ref(false);
 const isEditMode = ref(false);
 const store = useEmployeeStore();
+const confirm = useConfirm();
+
 
 onMounted(() => {
   store.loadEmployees();
@@ -134,7 +139,18 @@ const onModalSave = (updatedEmployee: any) => {
 };
 
 const onDelete = (employee: any) => {
-  store.deleteEmployee(employee.id);
+  confirm.require({
+    message: 'Are you sure you want to delete this employee?',
+    header: 'Confirm Deletion',
+    icon: 'pi pi-exclamation-triangle',
+    acceptClass: 'p-button-danger',
+    accept: () => {
+      store.deleteEmployee(employee.id);
+      store.setPage(store.currentPage);
+    },
+    reject: () => {
+    }
+  });
 };
 
 //Function to check if employee is currently employed.
